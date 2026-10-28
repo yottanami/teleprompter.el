@@ -1,0 +1,71 @@
+* teleprompter.el
+
+Turn any Emacs buffer into a teleprompter: large text on a black
+background with timer-driven auto-scrolling and play/pause control.
+
+Open your script, run =M-x teleprompter-mode=, put the window on the
+screen your camera reads from, and press =SPC=.
+
+** Keys
+
+While the mode is active the buffer is read-only, so the plain-letter
+keys below never insert text. Turning the mode off restores the buffer
+exactly as it was.
+
+| Key           | Action                        |
+|---------------+-------------------------------|
+| =SPC=         | play / pause                  |
+| =<up>= / =f=  | scroll faster                 |
+| =<down>= / =s= | scroll slower                |
+| =+= / =-=     | text bigger / smaller         |
+| =<home>=      | pause and jump back to the top |
+| =q=           | quit teleprompter mode        |
+
+Scrolling pauses by itself when the end of the script comes into view.
+
+** Installation
+
+Not on MELPA yet. With Emacs 30+:
+
+#+begin_src emacs-lisp
+(use-package teleprompter
+  :vc (:url "https://github.com/yottanami/teleprompter.el"))
+#+end_src
+
+Or manually: put =teleprompter.el= somewhere in your =load-path= and
+
+#+begin_src emacs-lisp
+(require 'teleprompter)
+#+end_src
+
+** Customization
+
+All options live in the =teleprompter= customize group:
+
+- =teleprompter-text-scale= :: text size steps applied on start
+  (default 4, roughly double size)
+- =teleprompter-scroll-interval= :: initial seconds per scrolled line
+  (default 0.6)
+- =teleprompter-background= / =teleprompter-foreground= :: colors
+  (default white text on black)
+- =teleprompter-line-spacing= :: extra spacing between lines
+  (default 0.3)
+
+** Hardware teleprompters
+
+Prompter hardware (for example the Elgato Prompter) shows the screen
+through beamsplitter glass that mirrors the image horizontally. This
+package does not flip the text; mirror the whole output at the display
+server level instead. On X11:
+
+#+begin_src sh
+xrandr --output <OUTPUT> --reflect x
+#+end_src
+
+On Linux the Elgato Prompter attaches as a DisplayLink display and
+needs the =evdi= kernel module plus the DisplayLink driver; once it
+shows up in =xrandr=, treat it as a normal external monitor.
+
+** License
+
+GPL-3.0-or-later. See [[file:LICENSE][LICENSE]].
